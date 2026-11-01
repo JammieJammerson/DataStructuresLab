@@ -27,13 +27,26 @@ public class MyHashTable<TKey, TValue> where TKey : notnull
     //   BucketFor(key)  steps 1 and 2: hash the key with GetHashCode, then
     //                   pick a bucket with %. Wrap it in Math.Abs, because
     //                   a hash code can be negative.
+    private int BucketFor(TKey key)
+    {
+        return Math.Abs(key.GetHashCode() % buckets.Length);
+    }
 
     // Adds a pair to the key's bucket. Throw ArgumentException when the key
     // is already in that bucket. Compare keys with Equals(a, b).
     public void Add(TKey key, TValue value)
     {
-        // TODO: Part F, demo
-        throw new NotImplementedException();
+        List<KeyValuePair<TKey, TValue>> bucket = buckets[BucketFor(key)];
+        foreach (KeyValuePair<TKey, TValue> pair in bucket)
+        {
+            if (Equals(pair.Key, key))
+            {
+                throw new ArgumentException("A pair with the same key already exists.");
+            }
+        }
+
+        bucket.Add(new KeyValuePair<TKey, TValue>(key, value));
+        count++;
     }
 
     // Step 3: search only the key's own bucket. When the key is there, set
@@ -41,8 +54,18 @@ public class MyHashTable<TKey, TValue> where TKey : notnull
     // default and return false.
     public bool TryGetValue(TKey key, out TValue? value)
     {
-        // TODO: Part F, Exercise 6
-        throw new NotImplementedException();
+        List<KeyValuePair<TKey, TValue>> bucket = buckets[BucketFor(key)];
+        foreach (KeyValuePair<TKey, TValue> pair in bucket)
+        {
+            if (Equals(pair.Key, key))
+            {
+                value = pair.Value;
+                return true;
+            }
+        }
+
+        value = default;
+        return false;
     }
 
     // Given. A line like "1 2 1 0 1 0 0": how many pairs sit in each bucket.
