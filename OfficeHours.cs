@@ -13,7 +13,25 @@ public static class OfficeHours
     // Return the result list. Do not print anything here.
     public static MyList<string> Run(MyQueue<Visit> line, int slice)
     {
-        // TODO: Part D, Exercise 4
-        throw new NotImplementedException();
+        MyList<string> finished = new MyList<string>();
+        int clock = 0;
+
+        while (!line.IsEmpty)
+        {
+            Visit visit = line.Dequeue();
+            int used = visit.Help(slice);
+            clock += used;
+
+            if (visit.MinutesLeft > 0)
+            {
+                line.Enqueue(visit);
+            }
+            else
+            {
+                finished.Add(visit.Name + " done at minute " + clock);
+            }
+        }
+
+        return finished;
     }
 }
