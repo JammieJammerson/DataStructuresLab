@@ -7,23 +7,29 @@ public static class CourseQueries
     // Part G, demo: the code of every course with at least one open seat.
     public static List<string> OpenCourseCodes(List<Course> courses)
     {
-        // TODO: Part G, demo. Where, then Select, then ToList.
-        throw new NotImplementedException();
+        return courses
+            .Where(c => c.SeatsLeft > 0)
+            .Select(c => c.Code)
+            .ToList();
     }
 
     // Part G, demo: the titles of the four credit courses.
     public static List<string> FourCreditTitles(List<Course> courses)
     {
-        // TODO: Part G, demo
-        throw new NotImplementedException();
+        return courses
+            .Where(c => c.Credits == 4)
+            .Select(c => c.Title)
+            .ToList();
     }
 
     // Exercise 7: one line per open course, in list order,
     // like "CSCI 1250: 2 seats left".
     public static List<string> SeatsLeftReport(List<Course> courses)
     {
-        // TODO: Part G, Exercise 7
-        throw new NotImplementedException();
+        return courses
+            .Where(c => c.SeatsLeft > 0)
+            .Select(c => $"{c.Code}: {c.SeatsLeft} seats left")
+            .ToList();
     }
 
     // Part H, demo: the three biggest courses, largest first,
